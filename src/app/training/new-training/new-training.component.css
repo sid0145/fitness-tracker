@@ -1,0 +1,9 @@
+.section{
+    display: flex;
+  justify-content: center;
+    
+}
+mat-card{
+    width: 600px;
+    text-align: center;
+}

@@ -1,0 +1,17 @@
+<mat-toolbar color="accent" class="toolbar">
+  <div class="toggle">
+      <button mat-icon-button (click)="onToggleSideNav()">
+          <mat-icon>menu</mat-icon>
+      </button>
+  </div>
+  <div class="logo">
+      <a routerLink="/">logo</a>
+  </div>
+  <div class="extra"></div>
+  <div class="link">
+      <div *ngIf="!isAuth" class="linkItem" ><a routerLink="/signup">signup</a></div>
+      <div  *ngIf="!isAuth" class="linkItem"><a routerLink="/login">login</a></div>
+      <div *ngIf="isAuth" class="linkItem"><a routerLink="/training">training</a></div>
+      <div *ngIf="isAuth" class="linkItem"><a routerLink (click)="onLogout()">logout</a></div>
+  </div>
+</mat-toolbar>
