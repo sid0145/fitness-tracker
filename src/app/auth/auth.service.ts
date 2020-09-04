@@ -2,11 +2,13 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { MatSnackBar } from '@angular/material';
 
 
 import { User }  from './user.model';
 import { AuthData } from './auth-data.model';
 import { TrainingService } from '../training/training.service';
+import { UIService } from '../shared/ui.service';
 
 
 
@@ -15,8 +17,12 @@ export class AuthService{
     private user: User;
     authChange= new Subject<boolean>();
     private authenticated=false;
+    private snackBar: MatSnackBar;
 
-    constructor(private router: Router, private afAuth: AngularFireAuth, private trainingService: TrainingService){
+    constructor(private router: Router, 
+        private afAuth: AngularFireAuth, 
+        private trainingService: TrainingService,
+        private uiService: UIService){
 
     }
 
@@ -38,21 +44,32 @@ export class AuthService{
 
     //for signup new user
     resisterUser(authData: AuthData){
+        this.uiService.loadingStateChanged.next(true);
       this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password)
       .then(result=>{
+        this.uiService.loadingStateChanged.next(false);
+
       })
-      .catch(err=>{
-          console.log(err);
-      })
+      .catch(error=>{
+        this.uiService.loadingStateChanged.next(false);
+          
+          alert(error.message);
+      });
     }
 
     //for logging in
     loginUser(authData: AuthData){
+        this.uiService.loadingStateChanged.next(true);
        this.afAuth.auth.signInWithEmailAndPassword(authData.email, authData.password)
        .then(result=>{
+        this.uiService.loadingStateChanged.next(false);
+
        })
-       .catch(err=>{
-       })
+       .catch(error=>{
+        this.uiService.loadingStateChanged.next(false);
+
+        alert(error.message);
+       });
     }
 
     //for logging out

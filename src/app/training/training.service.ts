@@ -22,17 +22,13 @@ export class TrainingService {
        .snapshotChanges()
        .pipe(map(docArray=>{
       return docArray.map(doc=>{
-        return{
-        id: doc.payload.doc.id,
-        name: doc.payload.doc.data().name,
-        duration : doc.payload.doc.data().duration,
-        calories: doc.payload.doc.data().calories
-        }
+            const data = doc.payload.doc.data() as Exercise;
+            const id = doc.payload.doc.id;
+            return {id, ...data};
       });
-    })).subscribe((exercises : Exercise[])=>{
-        console.log(exercises);
+    })).subscribe((exercises )=>{
         this.availableExcercises=exercises;
-        console.log(this.availableExcercises);
+ 
        this.exeChanged.next([...this.availableExcercises]);
     })) ;
     }
